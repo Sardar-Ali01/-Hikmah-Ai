@@ -1,0 +1,387 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hikmah Ai</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #13a3b3, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #333;
+    }
+
+    .chat-container {
+      background: #8dea3bee;
+      padding: 25px 20px;
+      width: 420px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(181, 46, 46, 0.2);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #ca00e0;
+      text-shadow: 0 0 5px rgba(224, 0, 209, 0.3);
+    }
+
+    .chat-box {
+      height: 320px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 15px;
+      background: #393737;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .chat-box p {
+      margin: 8px 0;
+      padding: 10px 14px;
+      border-radius: 10px;
+      max-width: 80%;
+    }
+
+    .chat-box p strong {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .chat-box p:nth-child(odd) {
+      background-color: #ffffff;
+      align-self: flex-start;
+    }
+
+    .chat-box p:nth-child(even) {
+      background-color: #fefefe;
+      align-self: flex-end;
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid #ffffff;
+      border-radius: 8px;
+      outline: none;
+      font-size: 16px;
+    }
+
+    .chat-input button {
+      padding: 10px 18px;
+      background-color: #2cda5d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .chat-input button:hover {
+      background-color: #3f1db3;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">💬 Hikmah</div>
+    <div class="chat-box" id="chatBox"></div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Type your message...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const inputField = document.getElementById("userInput");
+      const chatBox = document.getElementById("chatBox");
+      const message = inputField.value.trim();
+      if (!message) return;
+
+      chatBox.innerHTML += `<p><strong>You</strong> ${message}</p>`;
+      inputField.value = "";
+
+      try {
+        const response = await fetch("http://localhost:8000/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+
+        if (!response.ok) throw new Error("Server error");
+
+        const data = await response.json();
+        chatBox.innerHTML += `<p><strong>Doctor:</strong> ${data.reply}</p>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      } catch (err) {
+        chatBox.innerHTML += `<p><strong>Bot:</strong> Error fetching response.</p>`;
+        console.error("Fetch error:", err);
+      }
+    }
+
+    // Optional: Press Enter to send
+    document.getElementById("userInput").addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HikmahAi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #dbe6e4, #e6f4ea);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #0c5e4a;
+      color: white;
+      padding: 15px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    header .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      font-family: 'Cinzel Decorative', cursive;
+    }
+
+    header .logo span {
+      margin-left: 10px;
+    }
+
+    nav a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .chat-wrapper {
+      background-color: #ffffff;
+      border-radius: 15px;
+      padding: 30px 25px;
+      width: 100%;
+      max-width: 750px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .site-title {
+      text-align: center;
+      font-size: 2rem;
+      font-family: 'Cinzel Decorative', cursive;
+      margin-bottom: 25px;
+      color: #0c5e4a;
+    }
+
+    .chat-box {
+      max-height: 400px;
+      overflow-y: auto;
+      background-color: #f4f9f8;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-box .user,
+    .chat-box .bot-message {
+      margin: 12px 0;
+      padding: 12px 16px;
+      border-radius: 10px;
+      max-width: 80%;
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+
+    .chat-box .user {
+      background-color: #daf5e9;
+      align-self: flex-end;
+      text-align: right;
+    }
+
+    .chat-box .bot-message {
+      background-color: #f0f0f0;
+      align-self: flex-start;
+      text-align: left;
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .chat-input button {
+      background-color: #0c5e4a;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .chat-input button:hover {
+      background-color: #0f755c;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #0c5e4a;
+      color: white;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      .chat-wrapper {
+        padding: 20px 15px;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">🕌 <span>HikmahAi</span></div>
+    <nav>
+      <a href="#">Hadiths</a>
+      <a href="#">Categories</a>
+      <a href="#">Daily Tasks</a>
+      <a href="#">Login</a>
+      <a href="#">Signup</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="chat-wrapper">
+      <div class="site-title">🌙 Welcome to HikmahAi – Your Islamic AI Guide</div>
+      <div class="chat-box" id="chatBox"></div>
+      <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Ask your question...">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 HikmahAi. All rights reserved. Guided by Deen, Powered by AI.
+  </footer>
+
+  <script>
+    async function sendMessage() {
+      const inputField = document.getElementById("userInput");
+      const chatBox = document.getElementById("chatBox");
+      const message = inputField.value.trim();
+      if (!message) return;
+
+      // Add user message
+      chatBox.innerHTML += `<div class="user"><strong>You:</strong> ${message}</div>`;
+      inputField.value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      try {
+        const response = await fetch("http://localhost:8000/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+
+        if (!response.ok) throw new Error("Server error");
+
+        const data = await response.json();
+
+        // Format reply: convert \n to <br> and bullets to HTML bullets
+        const formattedReply = data.reply
+          .replace(/\n/g, "<br>")
+          .replace(/(?:^|\n)[*-]\s(.+)/g, "<br>&bull; $1");
+
+        // Add bot message
+        chatBox.innerHTML += `<div class="bot-message"><strong>HikmahAi:</strong><br>${formattedReply}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      } catch (err) {
+        chatBox.innerHTML += `<div class="bot-message"><strong>HikmahAi:</strong> Error fetching response.</div>`;
+        console.error("Fetch error:", err);
+      }
+    }
+
+    // Send message on Enter key
+    document.getElementById("userInput").addEventListener("keypress", function (e) {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+
+</body>
+</html>
